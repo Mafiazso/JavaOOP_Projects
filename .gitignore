@@ -1,0 +1,8 @@
+target/
+*.class
+*.iml
+.idea/
+.settings/
+.classpath
+.project
+pomodoro.db
