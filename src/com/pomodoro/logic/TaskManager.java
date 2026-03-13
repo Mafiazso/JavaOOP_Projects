@@ -1,10 +1,12 @@
 package com.pomodoro.logic;
 
 import com.pomodoro.model.Task;
+import com.pomodoro.model.TaskStatus;
 import com.pomodoro.model.Category;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,7 +32,11 @@ public class TaskManager {
 
         this.tasks = database.loadAllTasks(categories);
     }
-
+    
+	// ===============================================================
+    // TASK
+    // ===============================================================
+    
     public void addTask(Task task) {
         tasks.add(task);
         database.saveTask(task);
@@ -40,16 +46,64 @@ public class TaskManager {
         tasks.remove(task);
         database.deleteTask(task.getId());
     }
-
-    // บันทึกการเปลี่ยนแปลงของ task ลง DB
-    public void updateTask(Task task) {
-        database.saveTask(task);
-    }
-
+    
+    // getAllTasks --> เอาทุก Tasks
     public List<Task> getAllTasks() {
         return tasks;
     }
+    
+    // getActiveTasks --> เอาแค่ active Tasks ไม่ใช่ Trash Tasks
+    public List<Task> getActiveTasks(){
+    	
+    	List<Task> result = new ArrayList<Task>();
+    	
+    	for(Task t : tasks) {
+    		if(t.getStatus() != TaskStatus.TRUSH) {
+    			result.add(t);
+    		}
+    	}
+    	return result;
+    };
+    
+    // getTrashTasks --> เอาแค่ Trash Tasks ไม่ใช่ active Tasks
+    public List<Task> getTrashTasks(){
+    	
+    	List<Task> result = new ArrayList<Task>();
+    	
+    	for(Task t : tasks) {
+    		if(t.getStatus() == TaskStatus.TRUSH) {
+    			result.add(t);
+    		}
+    	}
+    	return result;
+    };
+    
+    
+    // ย้าย Task ปกติไปเป็น Trash Task
+    public void moveToTrash(Task task) {
+    	task.setStatus(TaskStatus.TRUSH);
+    }
+    
+    
+    
+//   ******* ใช้ใน trash menu ********
+    
+    // restore Task (trash menu)
+    public void restoreTask(Task task) {
+    	task.setStatus(TaskStatus.TODO);
+    }
+    
+    // delete Forever (trash menu)
+    public void deleteForever(Task task) {
+    	tasks.remove(task);
+    }
+    
+//   ********************************
+    
+    
+// =====================================================================
 
+    
     public List<Category> getCategories() {
         return categories;
     }
@@ -68,7 +122,13 @@ public class TaskManager {
         categories.add(category);
         database.saveCategory(category);
     }
+    
+    
+	// ===============================================================
+    // SORT
+    // ===============================================================
 
+    
     // เรียงรายการงานตามชื่อ (A→Z)
     public void sortByName() {
         tasks.sort(new Comparator<Task>() {
@@ -113,6 +173,10 @@ public class TaskManager {
         });
     }
 
+    
+	// ===============================================================
+    // EXPORT FILE
+    // ===============================================================
     // ส่งออกงานทั้งหมดไปยังไฟล์ข้อความ
     public boolean exportAllToFile(String filepath) {
         try {
@@ -131,7 +195,18 @@ public class TaskManager {
             return false;
         }
     }
+    
+    
+	// ===============================================================
+    // DATABASE
+    // ===============================================================
 
+    
+    // บันทึกการเปลี่ยนแปลงของ task ลง DB
+    public void updateTask(Task task) {
+        database.saveTask(task);
+    }
+    
     // ปิด DB connection ตอนปิดโปรแกรม
     public void close() {
         database.close();

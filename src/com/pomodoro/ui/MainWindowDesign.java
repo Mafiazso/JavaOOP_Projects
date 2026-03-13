@@ -211,6 +211,7 @@ public class MainWindowDesign extends JFrame {
         menuPanel.add(Menu, BorderLayout.NORTH);
         
         // ** CardLayout Content Menu **
+
         taskMenuDesign taskMenu = new taskMenuDesign();
         contentPanel.add(taskMenu , "TASK");
         

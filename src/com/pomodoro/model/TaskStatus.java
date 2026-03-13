@@ -5,6 +5,7 @@ public class TaskStatus {
     public static final TaskStatus TODO = new TaskStatus("TODO", "To Do");
     public static final TaskStatus IN_PROGRESS = new TaskStatus("IN_PROGRESS", "In Progress");
     public static final TaskStatus DONE = new TaskStatus("DONE", "Done");
+    public static final TaskStatus TRUSH = new TaskStatus("TRUSH", "Trush"); // เพิ่ม Trash
 
     private final String name;
     private final String label;
@@ -19,7 +20,7 @@ public class TaskStatus {
     }
 
     public static TaskStatus[] values() {
-        return new TaskStatus[] { TODO, IN_PROGRESS, DONE };
+        return new TaskStatus[] { TODO, IN_PROGRESS, DONE, TRUSH };
     }
 
     public static TaskStatus valueOf(String name) {
@@ -31,6 +32,9 @@ public class TaskStatus {
         }
         if ("DONE".equals(name)) {
             return DONE;
+        }
+        if ("TRUSH".equals(name)) {
+        	return TRUSH;
         }
         throw new IllegalArgumentException("Unknown status: " + name);
     }
