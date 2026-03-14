@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+<<<<<<< HEAD
 import com.pomodoro.logic.PomodoroTimer;
 import com.pomodoro.logic.TaskManager;
 import com.pomodoro.model.Category;
@@ -44,6 +45,11 @@ import com.pomodoro.model.RepeatingTask;
 import com.pomodoro.model.SingleTask;
 import com.pomodoro.model.Task;
 import com.pomodoro.model.TaskStatus;
+=======
+//import com.pomodoro.logic.PomodoroTimer;
+import com.pomodoro.logic.TaskManager;
+import com.pomodoro.model.Task;
+>>>>>>> b6ecdd5 (all systems)
 import com.pomodoro.ui.MenuUI.trashMenuDesign;
 import com.pomodoro.ui.MenuUI.homeMenuDesign;
 import com.pomodoro.ui.MenuUI.settingMenuDesign;
@@ -87,8 +93,17 @@ public class MainWindowDesign extends JFrame {
     }
 
     public MainWindowDesign() {
+<<<<<<< HEAD
 
         // เซ็ตให้เป็นภาษาไทย
+=======
+    	
+    	// -- การเข้าถึง class อื่นๆ
+    	TaskManager taskManager = new TaskManager();
+        PomodoroTimer pomodoro = new PomodoroTimer(taskManager);
+        
+        // เปลี่ยนหน้าตาให้รองรับภาษาไทย
+>>>>>>> b6ecdd5 (all systems)
         Font thaiFont = new Font("Tahoma", Font.PLAIN, 14);
 
         UIManager.put("Label.font", thaiFont);
@@ -102,7 +117,10 @@ public class MainWindowDesign extends JFrame {
         UIManager.put("MenuItem.font", thaiFont);
         UIManager.put("ToolTip.font", thaiFont);
         UIManager.put("RadioButton.font", thaiFont);
+        UIManager.put("Table.font", thaiFont);
         UIManager.put("TableHeader.font", thaiFont);
+        UIManager.put("Menu.font", thaiFont);
+        UIManager.put("MenuItem.font", thaiFont);
 
         UIManager.put("OptionPane.messageFont", thaiFont);
         UIManager.put("OptionPane.buttonFont", thaiFont);
@@ -137,10 +155,21 @@ public class MainWindowDesign extends JFrame {
         contentPanel.setBorder(BorderFactory.createTitledBorder("Home")); // Default
         
         contentPane.add(contentPanel, BorderLayout.CENTER);
+<<<<<<< HEAD
         
         // ===============================================================
         // MENU PANEL (WEST)
         // ===============================================================
+=======
+
+        // ใช้งานตัวจัดการงานร่วมกันในทุกหน้าย่อย
+        TaskManager sharedTaskManager = new TaskManager();
+        taskMenuDesign taskMenu = new taskMenuDesign(sharedTaskManager , pomodoro);
+        trashMenuDesign trashMenu = new trashMenuDesign(sharedTaskManager);
+        homeMenuDesign home = new homeMenuDesign(sharedTaskManager);
+
+        // แถบเมนูซ้ายมือ
+>>>>>>> b6ecdd5 (all systems)
         JPanel menuPanel = new JPanel();
         menuPanel.setBounds(5, 5, 160, 551);
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
@@ -209,6 +238,7 @@ public class MainWindowDesign extends JFrame {
         Menu.add(btnSetting);
         
         menuPanel.add(Menu, BorderLayout.NORTH);
+<<<<<<< HEAD
         
         // ** CardLayout Content Menu **
         taskMenuDesign taskMenu = new taskMenuDesign();
@@ -229,6 +259,19 @@ public class MainWindowDesign extends JFrame {
         // ===============================================================
         pomodoroTimer pomodoro = new pomodoroTimer();
         
+=======
+
+        // สร้างแต่ละหน้าจอผูกกับข้อความ
+        contentPanel.add(taskMenu, "TASK");
+        contentPanel.add(home, "HOME");
+
+        contentPanel.add(trashMenu, "TRASH");
+
+        settingMenuDesign settingMenu = new settingMenuDesign(pomodoro);
+        contentPanel.add(settingMenu, "SETTING");
+
+        // แถบจับเวลาด้านขวา
+>>>>>>> b6ecdd5 (all systems)
         JPanel timerPanel = new JPanel();
         contentPane.add(timerPanel, BorderLayout.EAST);
         timerPanel.setBounds(719, 5, 260, 551);

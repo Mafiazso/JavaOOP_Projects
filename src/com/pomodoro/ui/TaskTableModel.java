@@ -1,5 +1,13 @@
 package com.pomodoro.ui;
 
+<<<<<<< HEAD
+=======
+import java.awt.Font;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.swing.JTable;
+>>>>>>> b6ecdd5 (all systems)
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;

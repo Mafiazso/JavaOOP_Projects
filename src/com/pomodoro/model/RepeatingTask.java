@@ -85,6 +85,6 @@ public class RepeatingTask extends Task {
                 "\nคำอธิบาย: " + description +
                 "\nทำซ้ำทุก: " + intervalDays + " วัน" +
                 "\nครั้งถัดไป: " + nextOccurrenceText +
-                "\nเวลาโฟกัสรวม: " + getTotalFocusMinutes() + " นาที";
+                "\nเวลาโฟกัสรวม: " + getTotalFocusTime() + " นาที";
     }
 }

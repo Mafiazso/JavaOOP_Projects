@@ -33,7 +33,12 @@ public class DatabaseManager {
                     )
                 """);
 
+<<<<<<< HEAD
         // ตาราง tasks (ทั้ง SingleTask และ RepeatingTask)
+=======
+        // ตารางงาน
+        // - เพิ่ม completed_pomodoto , last_time_work เข้าไป
+>>>>>>> b6ecdd5 (all systems)
         stmt.execute("""
                     CREATE TABLE IF NOT EXISTS tasks (
                         id TEXT PRIMARY KEY,
@@ -49,6 +54,8 @@ public class DatabaseManager {
                         interval_days INTEGER,
                         next_occurrence INTEGER,
                         remaining_seconds INTEGER DEFAULT -1,
+                        completed_pomodoro INTEGER DEFAULT 0,
+                        last_time_work LONG,
                         FOREIGN KEY (category_id) REFERENCES categories(id)
                     )
                 """);
@@ -92,18 +99,23 @@ public class DatabaseManager {
     // ==================== TASK ====================
 
     public void saveTask(Task task) {
-        String sql = """
-                    INSERT OR REPLACE INTO tasks
-                    (id, title, description, status, priority, category_id, due_date, reminder_time, total_focus_minutes, task_type, interval_days, next_occurrence, remaining_seconds)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+    		String sql = """
+    		    INSERT OR REPLACE INTO tasks
+    		    (id, title, description, status, priority, category_id, due_date, reminder_time, total_focus_minutes, task_type, interval_days, next_occurrence, remaining_seconds, completed_pomodoro, last_time_work)
+    		    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    		""";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, task.getId());
             ps.setString(2, task.getTitle());
             ps.setString(3, task.getDescription());
+<<<<<<< HEAD
             ps.setString(4, task.getStatus().name());
             ps.setString(5, task.getPriority().name());
 
+=======
+            ps.setString(4, task.getStatus());
+            ps.setString(5, task.getPriority());
+>>>>>>> b6ecdd5 (all systems)
             if (task.getCategory() != null) {
                 ps.setString(6, task.getCategory().getId());
             } else {
@@ -122,7 +134,7 @@ public class DatabaseManager {
                 ps.setLong(8, 0);
             }
 
-            ps.setInt(9, task.getTotalFocusMinutes());
+            ps.setInt(9, task.getTotalFocusTime());
 
             if (task instanceof RepeatingTask) {
                 RepeatingTask repeatingTask = (RepeatingTask) task;
@@ -138,8 +150,12 @@ public class DatabaseManager {
                 ps.setNull(11, Types.INTEGER);
                 ps.setNull(12, Types.INTEGER);
             }
-
+            
+         // - เพิ่มโค้ดสำหรับ pomodoro
             ps.setInt(13, task.getRemainingSeconds());
+            ps.setInt(14, task.getCompletedPomodoro());
+            ps.setLong(15, task.getLastTimeWork());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             System.err.println("บันทึก Task ไม่ได้: " + e.getMessage());
@@ -205,9 +221,13 @@ public class DatabaseManager {
                     task.setReminderTime(new Date(reminderMs));
                 }
 
-                task.addFocusMinutes(rs.getInt("total_focus_minutes"));
+                task.addFocusTime(rs.getInt("total_focus_minutes"));
                 task.setRemainingSeconds(rs.getInt("remaining_seconds"));
 
+                // เพิ่มโค้ด
+                task.setCompletedPomodoro(rs.getInt("completed_pomodoro"));
+                task.setLastTimeWork(rs.getLong("last_time_work"));
+                
                 list.add(task);
             }
         } catch (SQLException e) {

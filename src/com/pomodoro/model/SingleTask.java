@@ -38,6 +38,6 @@ public class SingleTask extends Task {
                 "\nความสำคัญ: " + getPriority() +
                 "\nหมวดหมู่: " + categoryName +
                 "\nคำอธิบาย: " + description +
-                "\nเวลาโฟกัสรวม: " + getTotalFocusMinutes() + " นาที";
+                "\nเวลาโฟกัสรวม: " + getTotalFocusTime() + " นาที";
     }
 }

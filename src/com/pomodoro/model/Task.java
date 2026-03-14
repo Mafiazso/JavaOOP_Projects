@@ -13,9 +13,19 @@ public abstract class Task implements Exportable {
     private Priority priority;
     private Date reminderTime;
     private Category category;
+<<<<<<< HEAD
     private int totalFocusMinutes;
     // เก็บเวลาที่เหลือของ task ไว้ resume ต่อได้ (-1 = ยังไม่เคย start)
+=======
+    // - เปลี่ยนจาก minute เป็นทั้งนาทีและวินาที
+    private int totalFocusTime;
+    // บันทึกเวลาที่เหลือไว้เผื่อกลับมาทำต่อ ถ้าเป็นลบหนึ่งแปลว่ายังไม่ได้เริ่มทำ
+>>>>>>> b6ecdd5 (all systems)
     private int remainingSeconds = -1;
+    // - เพิ่มโค้ดสำหรับเก็บค่า pomodoro
+    private int completedPomodoro = 0;
+	private long lastTimeWork = 0;
+    
 
     public Task(String title, Priority priority, Category category) {
         this.id = UUID.randomUUID().toString();
@@ -23,7 +33,7 @@ public abstract class Task implements Exportable {
         this.priority = priority;
         this.category = category;
         this.status = TaskStatus.TODO;
-        this.totalFocusMinutes = 0;
+        this.totalFocusTime = 0;
     }
 
     // Getters and Setters
@@ -103,12 +113,12 @@ public abstract class Task implements Exportable {
         this.category = category;
     }
 
-    public int getTotalFocusMinutes() {
-        return totalFocusMinutes;
+    public int getTotalFocusTime() {
+        return totalFocusTime;
     }
 
-    public void addFocusMinutes(int minutes) {
-        this.totalFocusMinutes += minutes;
+    public void addFocusTime(int time) {
+        this.totalFocusTime += time;
     }
 
     // Getter/Setter สำหรับเวลาที่เหลือ
@@ -119,6 +129,24 @@ public abstract class Task implements Exportable {
     public void setRemainingSeconds(int remainingSeconds) {
         this.remainingSeconds = remainingSeconds;
     }
+    
+    // - เพิ่ม getter / setter สำหรับ pomodoro
+    public int getCompletedPomodoro() {
+		return completedPomodoro;
+	}
+
+	public void setCompletedPomodoro(int completedPomodoro) {
+		this.completedPomodoro = completedPomodoro;
+	}
+
+	public long getLastTimeWork() {
+		return lastTimeWork;
+	}
+
+	public void setLastTimeWork(long lastTimeWork) {
+		this.lastTimeWork = lastTimeWork;
+	}
+    
 
     // Abstract methods for subclasses
     public abstract String getSummary();
